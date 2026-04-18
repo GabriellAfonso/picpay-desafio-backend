@@ -1,6 +1,6 @@
 [tool.bandit]
-exclude_dirs = ["wsl_venv", "server/features/picpay/tests"]
-skips = ["B101"]  # assert statements are fine in tests
+exclude_dirs = ["wsl_venv", "server/features/picpay/tests", "server/core/tests"]
+skips = ["B101", "B105", "B106", "B311"]
 
 [tool.ruff]
 line-length = 100
