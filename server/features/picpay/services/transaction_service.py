@@ -12,11 +12,11 @@ class TransactionService:
 
     def process_transaction(self, data):
         self.validator.validate(data)
-        return self._create_transaction(data['value'], data['sender'], data['receiver'])
+        return self._create_transaction(data["value"], data["sender"], data["receiver"])
 
     def _get_external_authorization(self):
-        response = requests.get('https://util.devi.tools/api/v2/authorize')
-        if response.status_code == 200 and response.json().get('data', {}).get('authorization'):
+        response = requests.get("https://util.devi.tools/api/v2/authorize", timeout=5)
+        if response.status_code == 200 and response.json().get("data", {}).get("authorization"):
             return True
         raise AuthorizationDenied
 
