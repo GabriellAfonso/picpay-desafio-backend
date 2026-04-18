@@ -62,7 +62,9 @@ class GetExternalAuthorizationTest(TestCase):
         mock_requests.get.return_value = make_authorized_response()
         service = make_service()
         service._get_external_authorization()
-        mock_requests.get.assert_called_once_with("https://util.devi.tools/api/v2/authorize")
+        mock_requests.get.assert_called_once_with(
+            "https://util.devi.tools/api/v2/authorize", timeout=5
+        )
 
 
 @pytest.mark.unit
