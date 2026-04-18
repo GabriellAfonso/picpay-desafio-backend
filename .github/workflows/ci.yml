@@ -32,7 +32,7 @@ jobs:
 
       - name: Check pending migrations
         working-directory: server
-        run: python ../manage.py migrate --check
+        run: python manage.py migrate --check
 
       - name: Run tests
         working-directory: server
