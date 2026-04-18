@@ -1,20 +1,16 @@
 from rest_framework import status
 from django.utils.translation import gettext_lazy as _
+from core.exceptions import DomainException
 
 
-class TransactionExceptions(Exception):
-    """Base exception class for transaction-related errors."""
-
-    def __init__(self, message, status_code):
-        self.message = message
-        self.status_code = status_code
-        super().__init__(message)
+class TransactionExceptions(DomainException):
+    """Base exception for picpay transaction-related errors."""
 
 
 class AccountDoesNotExist(TransactionExceptions):
     """Exception raised when an account does not exist."""
 
-    def __init__(self, account, message=_("Account does not exist!"), status_code=status.HTTP_404_NOT_FOUND):
+    def __init__(self, account=None, message=_("Account does not exist!"), status_code=status.HTTP_404_NOT_FOUND):
         self.account = account
         super().__init__(message, status_code)
 
