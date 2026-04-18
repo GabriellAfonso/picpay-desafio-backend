@@ -7,7 +7,7 @@ services:
     ports:
       - "8001:8000"
     volumes:
-      - ./picpay:/picpay
+      - ./server:/server
     env_file:
       - ./dotenv_files/.env
     depends_on:
