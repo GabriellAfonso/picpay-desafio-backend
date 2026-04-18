@@ -1,7 +1,7 @@
 import pytest
 from decimal import Decimal
 from django.test import TestCase
-from unittest.mock import patch, Mock, call
+from unittest.mock import patch, Mock
 from features.picpay.exceptions import AuthorizationDenied
 from features.picpay.services.transaction_service import TransactionService
 
@@ -33,7 +33,6 @@ def make_unauthorized_response():
 
 @pytest.mark.unit
 class GetExternalAuthorizationTest(TestCase):
-
     @patch("features.picpay.services.transaction_service.requests")
     def test_returns_true_when_authorized(self, mock_requests):
         mock_requests.get.return_value = make_authorized_response()
@@ -68,7 +67,6 @@ class GetExternalAuthorizationTest(TestCase):
 
 @pytest.mark.unit
 class CreateTransactionTest(TestCase):
-
     @patch("features.picpay.services.transaction_service.requests")
     def test_calls_pay_on_sender(self, mock_requests):
         mock_requests.get.return_value = make_authorized_response()

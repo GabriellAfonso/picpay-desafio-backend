@@ -1,23 +1,20 @@
-import requests
-from features.picpay.models import PicPayAccount, Transaction
-from django.db import transaction as django_transaction
 from rolepermissions.checkers import has_permission
 from features.picpay.exceptions import (
-    AccountDoesNotExist, SelfTransferError,
+    SelfTransferError,
     InsufficientBalanceError,
     TransferPermissionDenied,
-    ReceivePermissionDenied, )
+    ReceivePermissionDenied,
+)
 from django.core.exceptions import ValidationError
 
 
-class TransactionValidator():
-
+class TransactionValidator:
     def validate(self, data):
-        sender = data['sender']
-        receiver = data['receiver']
-        self._check_positive_value(data['value'])
+        sender = data["sender"]
+        receiver = data["receiver"]
+        self._check_positive_value(data["value"])
         self._check_not_self_transfer(sender, receiver)
-        self._check_balance_sufficient(sender, data['value'])
+        self._check_balance_sufficient(sender, data["value"])
         self._check_permissions(sender, receiver)
 
     def _check_positive_value(self, value):
@@ -33,7 +30,7 @@ class TransactionValidator():
             raise InsufficientBalanceError(sender)
 
     def _check_permissions(self, sender, receiver):
-        if not has_permission(sender.user, 'make_transfer'):
+        if not has_permission(sender.user, "make_transfer"):
             raise TransferPermissionDenied
-        elif not has_permission(receiver.user, 'receive_transfer'):
+        elif not has_permission(receiver.user, "receive_transfer"):
             raise ReceivePermissionDenied

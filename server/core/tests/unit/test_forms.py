@@ -1,7 +1,7 @@
 import pytest
 from django.test import TestCase
 from django.contrib.auth.models import User
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from core.forms import BaseRegisterForm, EmailAuthenticationForm
 
 
@@ -16,7 +16,6 @@ def valid_base_form_data(username="johndoe", email="john@test.com"):
 
 @pytest.mark.unit
 class BaseRegisterFormTest(TestCase):
-
     def test_valid_data_is_valid(self):
         form = BaseRegisterForm(data=valid_base_form_data())
         self.assertTrue(form.is_valid())
@@ -42,7 +41,9 @@ class BaseRegisterFormTest(TestCase):
 
     def test_duplicate_email_is_invalid(self):
         User.objects.create_user(username="existing", email="john@test.com", password="password123")
-        form = BaseRegisterForm(data=valid_base_form_data(username="newuser", email="john@test.com"))
+        form = BaseRegisterForm(
+            data=valid_base_form_data(username="newuser", email="john@test.com")
+        )
         self.assertFalse(form.is_valid())
         self.assertIn("email", form.errors)
 
@@ -55,7 +56,6 @@ class BaseRegisterFormTest(TestCase):
 
 @pytest.mark.unit
 class EmailAuthenticationFormTest(TestCase):
-
     def setUp(self):
         self.user = User.objects.create_user(
             username="john",
