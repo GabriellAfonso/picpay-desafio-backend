@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-br" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seu Perfil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{% static "picpay/css/profile.css" %}">
+    <link rel="icon" href="{% static 'picpay/images/favicon.ico' %}" type="image/x-icon">
+</head>
+<body class="d-flex bg-body-tertiary">
+    <main class="">
+        <div class="card">
+            <div id="transaction-tab" class="d-flex flex-column justify-content-center">
+                <i id="transaction-tab-arrow"  class="bi bi-arrow-left-circle fs-1 ms-1"></i>
+                <form >
+                    <div class="form-group mb-1">
+                      <span>CPF pra testes: 502.841.410-62</span>
+                        <label for="document-transaction-input">Destinatário</label>
+                        <input id="document-transaction-input" type="text" class="form-control"  placeholder="Digite o CPF/CNPJ" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group mb-1">
+                            <span class="input-group-text">R$:</span>
+                            <input id="value-transaction-input" maxlength="20" type="text" class="form-control" aria-label="Amount" required>
+                          </div>
+                    </div>
+                    <div id="transaction-response"  class="m-0"style="display: none;"></div>
+
+                    <button id="transaction-btn" type="button" class="btn btn-primary mt-3">
+                       Enviar
+                      </button>
+                      
+                      
+                </form>
+            </div>
+
+            
+            <div class="ds-top d-flex">
+              <div class="d-flex align-items-center">
+                <img class="ms-4"src="{% static "picpay/images/picpay-logo-black2.png" %}" alt="" width="40px" height="40px" style="border-radius:5px;">
+              </div>
+              <a class="ms-auto me-2 mt-3" href="{% url "picpay:logout" %}">
+              <i title="Logout" class="bi bi-box-arrow-in-left fs-1  text-dark"  style="cursor: pointer;"></i>
+            </a>
+            </div>
+            <div class="avatar-holder">
+              {% if sex == 'M' %}
+              <img src="https://as1.ftcdn.net/v2/jpg/04/43/94/64/1000_F_443946404_7GUoIGZeyx7R7ymCicI3k0xPnrMoKDek.jpg" alt="profile picture">
+              {% endif %}
+              {% if sex == 'F' %}
+              <img src="https://t3.ftcdn.net/jpg/04/43/94/64/240_F_443946496_oS2DyLfj5a067Dqnj6OazMFtMasjh40K.jpg" alt="profile picture">
+              {% endif %}
+            </div>
+            <div class="name">
+             <span> {{display_name}} </span>
+            </div>
+
+            <div id="balance-value" class="balance">
+                <span>R$: {{balance}}</span>
+            </div>
+            <button id="transaction-tab-btn" type="button" class="mx-auto btn btn-outline-success transaction">transaction</button>
+
+            <div id="transaction-history"class="list-group">
+              {% for transaction in last_transactions  %}
+                <a href="#" class="list-group-item list-group-item-action " aria-current="true">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1 {% if transaction.action == 'Recebeu' %}received{% else %}sent{% endif %}">{{transaction.action}}</h5>
+                    <small>{{transaction.time}}</small>
+                  </div>
+                  <p class="">R$:{{transaction.value}}</p>
+                  <small>{% if transaction.action == 'Recebeu' %}de{% else %}para{% endif %}: {{transaction.counterpart}}</small>
+                </a>
+                {% endfor %}
+              </div>
+
+              <div id ="confirmation-modal"class="modal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Confirmação</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p id ="confirmation-modal-text">Modal body text goes here.</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <button id="confirmation-modal-btn" type="button" class="btn btn-primary">Transferir</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+        </div>
+   
+       
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+    {% comment %} <script src="{% static "picpay/js/maskMoney.js" %}" type="text/javascript"></script>
+    <script src="{% static "picpay/js/apiCommunicator.js" %}" type="text/javascript"></script> {% endcomment %}
+    <script type="module" src={% static "picpay/js/main.js" %}></script>
+   
+</body>
+</html>

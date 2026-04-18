@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css?family=Krub:400,700');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background: #202020;
+    font-family: 'Krub', sans-serif;
+}
+
+.card {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 400px;
+    height: 85vh;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px 5px rgba(0, 0, 0, 0.2);
+    background: #151515;
+    overflow: hidden;
+
+    .ds-top {
+        position: absolute;
+        margin: auto;
+        top: 0;
+        right: 0;
+        left: 0;
+        width: 400px;
+        height: 90px;
+        background: #198754;
+        animation: dsTop 1.5s;
+    }
+
+    .avatar-holder {
+        position: absolute;
+        margin: auto;
+        top: 40px;
+        right: 0;
+        left: 0;
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        box-shadow: 0 0 0 5px #151515,
+            inset 0 0 0 5px #000000,
+            inset 0 0 0 5px #000000,
+            inset 0 0 0 5px #000000,
+            inset 0 0 0 5px #000000, ;
+        background: white;
+        overflow: hidden;
+        animation: mvTop 1.5s;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .name {
+        margin-top: 200px;
+        top: -60px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: inherit;
+
+        text-align: center;
+        animation: fadeIn 2s ease-in;
+
+        span {
+            cursor: default;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+
+        }
+
+
+    }
+
+    .balance {
+        margin-top: 10px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: inherit;
+        text-align: center;
+        animation: fadeIn 2s ease-in;
+
+        span {
+            cursor: default;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+
+        }
+    }
+}
+
+.transaction {
+    width: 80%;
+    margin-top: 15px;
+}
+
+.list-group {
+
+
+    width: 95%;
+
+    /* Defina um valor máximo para a largura */
+    margin: auto;
+    font-size: 0.8rem;
+    /* margin-top: 6px; */
+    /* Centraliza a div */
+}
+
+.list-group-item {
+    background-color: #151515;
+    height: 11vh;
+
+    p {
+        margin-bottom: 0px;
+    }
+}
+
+
+#transaction-tab {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: -100%;
+    min-width: 100%;
+    max-width: 100%;
+    height: 100%;
+    transition: left 0.3s ease;
+    background-color: #191a19;
+}
+
+#transaction-tab form {
+    margin: auto;
+    margin-bottom: 35vh;
+    width: 70%;
+}
+
+
+
+
+
+
+.received {
+    color: #20aa40;
+}
+
+.sent {
+    color: #dc3545;
+}
+
+.confirmation-div {
+    z-index: 2;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 75%;
+    max-width: 75%;
+    height: 30%;
+    transition: left 0.3s ease;
+    background-color: #191a19;
+}
+
+@keyframes fadeInMove {
+    0% {
+        opacity: 0;
+        left: -300px;
+    }
+
+    100% {
+        opacity: 1;
+        left: 0;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes htmlSkill {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 95%;
+    }
+}
+
+@keyframes cssSkill {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 90%;
+    }
+}
+
+@keyframes jsSkill {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 75%;
+    }
+}
+
+@keyframes mvBottom {
+    0% {
+        bottom: -150px;
+    }
+
+    100% {
+        bottom: 10px;
+    }
+}
+
+@keyframes mvTop {
+    0% {
+        top: -150px;
+    }
+
+    100% {
+        top: 40px;
+    }
+}
+
+@keyframes dsTop {
+    0% {
+        top: -150px;
+    }
+
+    100% {
+        top: 0;
+    }
+}
