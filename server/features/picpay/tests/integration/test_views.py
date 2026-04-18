@@ -139,6 +139,75 @@ class YourProfileViewTest(TestCase):
 
 
 @pytest.mark.integration
+class YourProfileContextTest(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse("picpay:profile")
+        self.user = make_user()
+        self.account = make_account(self.user)
+        self.client.force_login(self.user)
+
+    def test_context_contains_display_name(self):
+        response = self.client.get(self.url)
+        self.assertIn("display_name", response.context)
+
+    def test_context_display_name_is_first_and_last(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.context["display_name"], "John Doe")
+
+    def test_context_contains_balance(self):
+        response = self.client.get(self.url)
+        self.assertIn("balance", response.context)
+
+    def test_context_balance_matches_account(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.context["balance"], Decimal("100.00"))
+
+    def test_context_contains_sex(self):
+        response = self.client.get(self.url)
+        self.assertIn("sex", response.context)
+
+    def test_context_contains_last_transactions(self):
+        response = self.client.get(self.url)
+        self.assertIn("last_transactions", response.context)
+
+    def test_context_last_transactions_is_list(self):
+        response = self.client.get(self.url)
+        self.assertIsInstance(response.context["last_transactions"], list)
+
+
+@pytest.mark.integration
+class GuestLoginViewTest(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse("picpay:guest_login")
+
+    @patch("features.picpay.views.auth_views.GuestLoginService")
+    def test_get_redirects_to_profile(self, mock_service_class):
+        mock_user = make_user(username="guest_abc", email="guest_abc@guest.local")
+        mock_service_class.return_value.create_guest.return_value = mock_user
+        response = self.client.get(self.url)
+        self.assertRedirects(response, reverse("picpay:profile"), fetch_redirect_response=False)
+
+    @patch("features.picpay.views.auth_views.GuestLoginService")
+    def test_get_logs_in_the_guest_user(self, mock_service_class):
+        mock_user = make_user(username="guest_def", email="guest_def@guest.local")
+        make_account(mock_user, document="guest_def")
+        mock_service_class.return_value.create_guest.return_value = mock_user
+        self.client.get(self.url)
+        self.assertIn("_auth_user_id", self.client.session)
+
+    @patch("features.picpay.views.auth_views.GuestLoginService")
+    def test_get_calls_create_guest(self, mock_service_class):
+        mock_user = make_user(username="guest_ghi", email="guest_ghi@guest.local")
+        mock_service_class.return_value.create_guest.return_value = mock_user
+        self.client.get(self.url)
+        mock_service_class.return_value.create_guest.assert_called_once()
+
+
+@pytest.mark.integration
 class LogoutViewTest(TestCase):
 
     def setUp(self):

@@ -89,6 +89,34 @@ class TransactionAPIViewPostTest(TestCase):
 
 
 @pytest.mark.integration
+class TransactionAPIViewParseValueTest(TestCase):
+
+    def setUp(self):
+        from features.picpay.views.api_views import TransactionAPIView
+        self.view = TransactionAPIView()
+
+    def test_parses_integer_string(self):
+        self.assertEqual(self.view._parse_value("50"), 50.0)
+
+    def test_dot_is_treated_as_thousands_separator(self):
+        # In BR format, dot = thousands separator: "50.00" means 5000
+        self.assertEqual(self.view._parse_value("50.00"), 5000.0)
+
+    def test_parses_decimal_with_comma(self):
+        self.assertEqual(self.view._parse_value("50,00"), 50.0)
+
+    def test_parses_value_with_dot_as_thousands_separator(self):
+        self.assertAlmostEqual(self.view._parse_value("1.000,50"), 1000.50)
+
+    def test_parses_large_value(self):
+        self.assertEqual(self.view._parse_value("9999,99"), 9999.99)
+
+    def test_raises_on_non_numeric_string(self):
+        with self.assertRaises((ValueError, AttributeError)):
+            self.view._parse_value("abc")
+
+
+@pytest.mark.integration
 class RecipientPreviewAPIViewTest(TestCase):
 
     def setUp(self):
