@@ -16,7 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'apps.picpay',
+    'features.picpay',
 ]
 
 ROLEPERMISSIONS_MODULE = 'core.roles'
