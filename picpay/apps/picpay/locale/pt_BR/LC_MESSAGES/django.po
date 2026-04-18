@@ -1,0 +1,43 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-24 10:11-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: apps/picpay/exceptions.py:17
+msgid "Account does not exist!"
+msgstr "Conta não existe!"
+
+#: apps/picpay/exceptions.py:25
+msgid "Transferring to your own account is not allowed"
+msgstr "Não é permitido transferir para sua própria conta"
+
+#: apps/picpay/exceptions.py:32
+msgid "Insufficient balance!"
+msgstr "Saldo insuficiente!"
+
+#: apps/picpay/exceptions.py:40
+msgid "Authorization denied, try again"
+msgstr "Autorização negada, tente novamente"
+
+#: apps/picpay/exceptions.py:47
+msgid "You do not have permission to make transfers"
+msgstr "Você não tem permissão para realizar transferências"
+
+#: apps/picpay/exceptions.py:54
+msgid "You do not have permission to receive transfers"
+msgstr "Você não tem permissão para receber transferências"
