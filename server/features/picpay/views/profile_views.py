@@ -3,8 +3,9 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from features.picpay.repositories.account_repository import AccountRepository
+from features.picpay.repositories.transaction_repository import TransactionRepository
+from features.picpay.services.profile_service import ProfileService
 from features.picpay.utils import get_first_and_last_name
-from features.picpay.services.profile_service import get_recent_profile_transactions
 
 
 class YourProfile(View):
@@ -16,6 +17,6 @@ class YourProfile(View):
             'display_name': get_first_and_last_name(account.complete_name),
             'balance': account.balance,
             'sex': account.sex,
-            'last_transactions': get_recent_profile_transactions(account, 2),
+            'last_transactions': ProfileService(TransactionRepository()).get_recent_transactions(account, 2),
         }
         return render(request, 'picpay/profile.html', context)
