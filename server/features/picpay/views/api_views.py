@@ -14,8 +14,7 @@ from features.picpay.validators.transaction_validator import TransactionValidato
 class TransactionAPIView(APIView):
 
     def get(self, request):
-        serializer = TransactionSerializer()
-        return Response(serializer.data)
+        return Response(TransactionSerializer().data)
 
     @method_decorator(csrf_protect)
     def post(self, request):
@@ -25,21 +24,23 @@ class TransactionAPIView(APIView):
             sender = account_repo.get_by_user_id(request.user.id)
             receiver = account_repo.get_by_document(request.data.get('document'))
 
-            data = {'value': value, 'sender': sender, 'receiver': receiver}
-            service = TransactionService(
+            result = TransactionService(
                 validator=TransactionValidator(),
                 transaction_repo=TransactionRepository(),
-            )
-            result = service.process_transaction(data)
-            serializer = TransactionSerializer(result)
+            ).process_transaction({'value': value, 'sender': sender, 'receiver': receiver})
+
             return Response(
-                {'success': 'Transação autorizada e processada com sucesso', 'transaction': serializer.data},
+                {'success': 'Transação autorizada e processada com sucesso',
+                 'transaction': TransactionSerializer(result).data},
                 status=status.HTTP_201_CREATED,
             )
         except TransactionExceptions as e:
             return Response({'error': e.message}, status=e.status_code)
         except Exception:
-            return Response({'error': 'Erro interno ao processar a transação.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {'error': 'Erro interno ao processar a transação.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
     def _parse_value(self, value: str) -> float:
         return float(value.replace('.', '').replace(',', '.'))
@@ -57,5 +58,4 @@ class RecipientPreviewAPIView(APIView):
         except TransactionExceptions:
             return Response({'erro': 'Destinatário não encontrado.'}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = RecipientPreviewSerializer(account)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(RecipientPreviewSerializer(account).data, status=status.HTTP_200_OK)

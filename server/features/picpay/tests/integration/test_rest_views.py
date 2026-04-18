@@ -53,7 +53,7 @@ class TransactionAPIViewPostTest(TestCase):
         self.receiver = make_account(self.receiver_user, "111.444.777-35")
         self.client.force_authenticate(user=self.sender_user)
 
-    @patch("features.picpay.rest_views.TransactionService")
+    @patch("features.picpay.views.api_views.TransactionService")
     def test_post_valid_transaction_returns_201(self, mock_service):
         real_transaction = Transaction.objects.create(
             value=Decimal("50.00"),
@@ -69,7 +69,7 @@ class TransactionAPIViewPostTest(TestCase):
 
         self.assertEqual(response.status_code, 201)
 
-    @patch("features.picpay.rest_views.TransactionService")
+    @patch("features.picpay.views.api_views.TransactionService")
     def test_post_transaction_exception_returns_correct_status(self, mock_service):
         mock_service.return_value.process_transaction.side_effect = InsufficientBalanceError(
             sender=self.sender

@@ -80,7 +80,7 @@ class RegisterViewTest(TestCase):
         response = self.client.get(self.url)
         self.assertTemplateUsed(response, "picpay/register.html")
 
-    @patch("features.picpay.views.PicPayRegistrationService")
+    @patch("features.picpay.views.auth_views.PicPayRegistrationService")
     def test_post_valid_form_redirects_to_login(self, mock_service):
         mock_service.return_value.register.return_value = None
         response = self.client.post(self.url, {

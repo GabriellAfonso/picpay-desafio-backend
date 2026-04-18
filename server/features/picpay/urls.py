@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import Login, Register, YourProfile, Logout, GuestLogin
-from features.picpay.rest_views import TransactionAPIView, RecipientPreviewAPIView
+from features.picpay.views.auth_views import Login, Register, Logout, GuestLogin
+from features.picpay.views.profile_views import YourProfile
+from features.picpay.views.api_views import TransactionAPIView, RecipientPreviewAPIView
 
 app_name = 'picpay'
 
