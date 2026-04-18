@@ -1,0 +1,27 @@
+services:
+  picpay_django:
+    container_name: picpay-server
+    build:
+      context: .
+    image: django-picpay:dev
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./picpay:/picpay
+    env_file:
+      - ./dotenv_files/.env
+    depends_on:
+      - picpay_db
+
+  picpay_db:
+    container_name: picpay-db
+    image: postgres:17-alpine
+    ports:
+      - 5433:5432
+    volumes:
+      - database:/var/lib/postgresql/data/
+    env_file:
+      - ./dotenv_files/.env
+
+volumes:
+  database:
