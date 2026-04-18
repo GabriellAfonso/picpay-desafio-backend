@@ -23,6 +23,9 @@ class AccountRepository:
         account.save()
         return account
 
+    def create_guest_user(self, username: str) -> User:
+        return User.objects.create_user(username=username)
+
     def get_by_user_id(self, user_id: int) -> PicPayAccount:
         try:
             return PicPayAccount.objects.get(user_id=user_id)
