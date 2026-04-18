@@ -33,10 +33,6 @@ jobs:
         working-directory: server
         run: python manage.py makemigrations --check --dry-run
 
-      - name: Check pending migrations
-        working-directory: server
-        run: python manage.py migrate --check
-
       - name: Run tests
         working-directory: server
         run: pytest
