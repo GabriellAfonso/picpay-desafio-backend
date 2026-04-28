@@ -2,7 +2,6 @@ Makefile
 .idea
 
 # Project specific
-dotenv_files/
 wsl_venv/
 server/static/
 claude-sandbox
@@ -111,9 +110,9 @@ celerybeat-schedule.*
 *.sage.py 
 
 # Environments 
-# .env 
-# .venv 
-# env/ 
+.env 
+.venv 
+env/ 
 venv/ 
 # ENV/ 
 # env.bak/ 
