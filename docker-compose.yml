@@ -4,8 +4,18 @@ services:
     build:
       context: .
     image: django-picpay:dev
+    command: >
+      sh -c "
+        while ! nc -z $$POSTGRES_HOST $$POSTGRES_PORT; do
+          echo 'Waiting for Postgres...' && sleep 2;
+        done &&
+        python manage.py collectstatic --noinput &&
+        python manage.py makemigrations --noinput &&
+        python manage.py migrate --noinput &&
+        python manage.py runserver 0.0.0.0:8000
+      "
     ports:
-      - "8001:8000"
+      - "8000:8000"
     volumes:
       - ./server:/server
     env_file:
