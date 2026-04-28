@@ -8,6 +8,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rolepermissions',
+    'drf_spectacular',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -21,6 +22,17 @@ INSTALLED_APPS = [
 
 ROLEPERMISSIONS_MODULE = 'core.roles'
 ROLEPERMISSIONS_REGISTER_ADMIN = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'PicPay Clone API',
+    'DESCRIPTION': 'API REST do clone PicPay (cadastro, login, transferências).',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

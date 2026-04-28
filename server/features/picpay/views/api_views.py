@@ -13,6 +13,7 @@ from features.picpay.validators.transaction_validator import TransactionValidato
 
 
 class TransactionAPIView(APIView):
+    serializer_class = TransactionSerializer
 
     def get(self, request: Request) -> Response:
         return Response(TransactionSerializer().data)
@@ -56,6 +57,7 @@ class TransactionAPIView(APIView):
 
 
 class RecipientPreviewAPIView(APIView):
+    serializer_class = RecipientPreviewSerializer
 
     def get(self, request: Request) -> Response:
         document = request.query_params.get('document')
