@@ -4,26 +4,25 @@ services:
     build:
       context: .
     image: django-picpay:prod
-    command: >
-      sh -c "
-        while ! nc -z $$POSTGRES_HOST $$POSTGRES_PORT; do
-          echo 'Waiting for Postgres...' && sleep 2;
-        done &&
+    command:
+      - sh
+      - -c
+      - |
         python manage.py collectstatic --noinput &&
         python manage.py migrate --noinput &&
-        gunicorn core.wsgi:application
-          --bind 0.0.0.0:8000
-          --workers 3
-          --timeout 60
-          --access-logfile -
+        gunicorn core.wsgi:application \
+          --bind 0.0.0.0:8000 \
+          --workers 3 \
+          --timeout 60 \
+          --access-logfile - \
           --error-logfile -
-      "
     env_file:
       - ./dotenv_files/.env
     networks:
       - proxy-network
     depends_on:
-      - picpay_db
+      picpay_db:
+        condition: service_healthy
     restart: unless-stopped
 
   picpay_db:
@@ -33,6 +32,11 @@ services:
       - database:/var/lib/postgresql/data/
     env_file:
       - ./dotenv_files/.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       - proxy-network
     restart: unless-stopped
