@@ -152,9 +152,6 @@ GitHub.sublime-settings
 .history
 
 #docker
-compose.prod.yml
-docker-compose.prod.yml
-compose.yml
 .env.prod
 postgres
 ssl
