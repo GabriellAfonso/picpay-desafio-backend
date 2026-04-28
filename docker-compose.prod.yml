@@ -1,0 +1,41 @@
+services:
+  picpay_django:
+    container_name: picpay-server
+    build:
+      context: .
+    image: django-picpay:prod
+    command: >
+      sh -c "
+        while ! nc -z $$POSTGRES_HOST $$POSTGRES_PORT; do
+          echo 'Waiting for Postgres...' && sleep 2;
+        done &&
+        python manage.py collectstatic --noinput &&
+        python manage.py migrate --noinput &&
+        gunicorn core.wsgi:application
+          --bind 0.0.0.0:8000
+          --workers 3
+          --timeout 60
+          --access-logfile -
+          --error-logfile -
+      "
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./dotenv_files/.env
+    depends_on:
+      - picpay_db
+    restart: unless-stopped
+
+  picpay_db:
+    container_name: picpay-db
+    image: postgres:17-alpine
+    ports:
+      - 5433:5432
+    volumes:
+      - database:/var/lib/postgresql/data/
+    env_file:
+      - ./dotenv_files/.env
+    restart: unless-stopped
+
+volumes:
+  database:
