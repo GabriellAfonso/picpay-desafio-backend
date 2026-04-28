@@ -16,6 +16,9 @@ services:
           --timeout 60 \
           --access-logfile - \
           --error-logfile -
+    volumes:
+      - ./server/static/:/server/static/
+      - ./server/media/:/server/media/
     env_file:
       - ./dotenv_files/.env
     networks:
