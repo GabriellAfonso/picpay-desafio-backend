@@ -29,6 +29,9 @@ jobs:
       - name: Security scan (bandit)
         run: bandit -r server/ -c pyproject.toml
 
+      - name: Type check (mypy)
+        run: mypy server
+
       - name: Check unmigrated model changes
         working-directory: server
         run: python manage.py makemigrations --check --dry-run

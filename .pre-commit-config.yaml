@@ -12,3 +12,18 @@ repos:
       - id: bandit
         args: [-c, pyproject.toml]
         additional_dependencies: ["bandit[toml]"]
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.20.2
+    hooks:
+      - id: mypy
+        pass_filenames: false
+        args: [--config-file=pyproject.toml, server]
+        additional_dependencies:
+          - django==6.0.3
+          - django-stubs==6.0.3
+          - djangorestframework==3.16.1
+          - djangorestframework-stubs==3.16.9
+          - types-requests==2.33.0.20260408
+          - django-role-permissions==3.2.0
+          - validate-docbr==1.10.0
