@@ -1,3 +1,4 @@
+from typing import Any
 from django.contrib.auth import authenticate
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
@@ -58,8 +59,8 @@ class BaseRegisterForm(UserCreationForm):
         model = User
         fields = ('username', 'email', 'password1', 'password2')
 
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
+    def clean_email(self) -> str:
+        email: str = self.cleaned_data.get('email', '')
         current_email = self.instance.email
 
         if current_email != email:
@@ -77,12 +78,12 @@ class EmailAuthenticationForm(forms.Form):
     email = forms.EmailField(label="E-mail")
     password = forms.CharField(label="Senha", widget=forms.PasswordInput)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         self.request = kwargs.pop("request", None)
-        self.user_cache = None
+        self.user_cache: User | None = None
         super().__init__(*args, **kwargs)
 
-    def clean(self):
+    def clean(self) -> dict:
         email = self.cleaned_data.get("email")
         password = self.cleaned_data.get("password")
 
@@ -96,5 +97,5 @@ class EmailAuthenticationForm(forms.Form):
                 raise forms.ValidationError("E-mail ou senha inválidos.")
         return self.cleaned_data
 
-    def get_user(self):
+    def get_user(self) -> User | None:
         return self.user_cache

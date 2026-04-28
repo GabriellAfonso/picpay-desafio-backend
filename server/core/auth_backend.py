@@ -1,5 +1,8 @@
+from typing import Any
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+from django.http import HttpRequest
 
 
 class EmailBackend(ModelBackend):
@@ -7,7 +10,13 @@ class EmailBackend(ModelBackend):
     Backend de autenticação via email e senha.
     """
 
-    def authenticate(self, request, username=None, password=None, **kwargs):
+    def authenticate(
+        self,
+        request: HttpRequest | None,
+        username: str | None = None,
+        password: str | None = None,
+        **kwargs: Any,
+    ) -> User | None:
         email = kwargs.get('email')
         if not email:
             # Não trata o caso username=..., deixa para o backend padrão

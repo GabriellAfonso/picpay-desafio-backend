@@ -19,15 +19,13 @@ class PicPayAccount(models.Model):
         max_digits=10, decimal_places=2, default=0.00, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def pay(self, value):
-        value = Decimal(value)
-        self.balance -= value
+    def pay(self, value: Decimal | float | int | str) -> None:
+        self.balance -= Decimal(value)
 
-    def receive(self, value):
-        value = Decimal(value)
-        self.balance += value
+    def receive(self, value: Decimal | float | int | str) -> None:
+        self.balance += Decimal(value)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.complete_name} ({self.document})'
 
 
@@ -52,7 +50,7 @@ class Transaction(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
 
-    def __str__(self):
+    def __str__(self) -> str:
         sender = self.sender.complete_name if self.sender else "Usuário Removido"
         receiver = self.receiver.complete_name if self.receiver else "Usuário Removido"
         return f'{sender} send ({self.value}) to {receiver}'

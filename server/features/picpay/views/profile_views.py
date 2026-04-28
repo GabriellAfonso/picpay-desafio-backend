@@ -1,3 +1,4 @@
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import View
 from django.utils.decorators import method_decorator
@@ -11,8 +12,8 @@ from features.picpay.utils import get_first_and_last_name
 class YourProfile(View):
 
     @method_decorator(login_required(login_url='picpay:login'))
-    def get(self, request):
-        account = AccountRepository().get_by_user_id(request.user.id)
+    def get(self, request: HttpRequest) -> HttpResponse:
+        account = AccountRepository().get_by_user_id(request.user.pk)
         context = {
             'display_name': get_first_and_last_name(account.complete_name),
             'balance': account.balance,

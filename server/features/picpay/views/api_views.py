@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.request import Request
 from rest_framework import status
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
@@ -13,15 +14,15 @@ from features.picpay.validators.transaction_validator import TransactionValidato
 
 class TransactionAPIView(APIView):
 
-    def get(self, request):
+    def get(self, request: Request) -> Response:
         return Response(TransactionSerializer().data)
 
     @method_decorator(csrf_protect)
-    def post(self, request):
+    def post(self, request: Request) -> Response:
         try:
             account_repo = AccountRepository()
             value = self._parse_value(request.data.get('value'))
-            sender = account_repo.get_by_user_id(request.user.id)
+            sender = account_repo.get_by_user_id(request.user.pk)
             receiver = account_repo.get_by_document(request.data.get('document'))
 
             result = TransactionService(
@@ -42,13 +43,13 @@ class TransactionAPIView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
-    def _parse_value(self, value: str) -> float:
-        return float(value.replace('.', '').replace(',', '.'))
+    def _parse_value(self, value: object) -> float:
+        return float(str(value).replace('.', '').replace(',', '.'))
 
 
 class RecipientPreviewAPIView(APIView):
 
-    def get(self, request):
+    def get(self, request: Request) -> Response:
         document = request.query_params.get('document')
         if not document:
             return Response({'erro': 'Documento não informado.'}, status=status.HTTP_400_BAD_REQUEST)

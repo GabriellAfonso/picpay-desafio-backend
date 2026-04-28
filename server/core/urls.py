@@ -2,10 +2,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.http import JsonResponse
+from django.http import HttpRequest, JsonResponse
 
 
-def health(_request):
+def health(_request: HttpRequest) -> JsonResponse:
     return JsonResponse({"status": "ok"})
 
 

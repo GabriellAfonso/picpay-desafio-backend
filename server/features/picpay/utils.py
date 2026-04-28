@@ -1,6 +1,6 @@
 
 
-def get_first_and_last_name(full_name):
+def get_first_and_last_name(full_name: str) -> str:
     parts = full_name.split()
 
     first_name = parts[0].capitalize()

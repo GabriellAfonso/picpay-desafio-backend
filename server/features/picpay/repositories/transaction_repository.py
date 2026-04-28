@@ -1,14 +1,22 @@
-from django.db.models import Q
+from decimal import Decimal
+from django.db.models import Q, QuerySet
 from features.picpay.models import PicPayAccount, Transaction
 
 
 class TransactionRepository:
-    def create(self, sender: PicPayAccount, receiver: PicPayAccount, value) -> Transaction:
+    def create(
+        self,
+        sender: PicPayAccount,
+        receiver: PicPayAccount,
+        value: Decimal | float | int | str,
+    ) -> Transaction:
         transaction = Transaction(sender=sender, receiver=receiver, value=value)
         transaction.save()
         return transaction
 
-    def get_recent_for_account(self, account: PicPayAccount, limit: int):
+    def get_recent_for_account(
+        self, account: PicPayAccount, limit: int
+    ) -> QuerySet[Transaction]:
         return (
             Transaction.objects
             .filter(Q(sender=account) | Q(receiver=account))

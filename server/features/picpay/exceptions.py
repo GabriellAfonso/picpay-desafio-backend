@@ -10,7 +10,12 @@ class TransactionExceptions(DomainException):
 class AccountDoesNotExist(TransactionExceptions):
     """Exception raised when an account does not exist."""
 
-    def __init__(self, account=None, message=_("Account does not exist!"), status_code=status.HTTP_404_NOT_FOUND):
+    def __init__(
+        self,
+        account: object = None,
+        message: object = _("Account does not exist!"),
+        status_code: int = status.HTTP_404_NOT_FOUND,
+    ) -> None:
         self.account = account
         super().__init__(message, status_code)
 
@@ -18,14 +23,23 @@ class AccountDoesNotExist(TransactionExceptions):
 class SelfTransferError(TransactionExceptions):
     """Exception raised when a transfer to the same account is attempted."""
 
-    def __init__(self, message=_("Transferring to your own account is not allowed"), status_code=status.HTTP_400_BAD_REQUEST):
+    def __init__(
+        self,
+        message: object = _("Transferring to your own account is not allowed"),
+        status_code: int = status.HTTP_400_BAD_REQUEST,
+    ) -> None:
         super().__init__(message, status_code)
 
 
 class InsufficientBalanceError(TransactionExceptions):
     """Exception raised when an account has insufficient balance."""
 
-    def __init__(self, sender, message=_("Insufficient balance!"), status_code=status.HTTP_400_BAD_REQUEST):
+    def __init__(
+        self,
+        sender: object,
+        message: object = _("Insufficient balance!"),
+        status_code: int = status.HTTP_400_BAD_REQUEST,
+    ) -> None:
         self.sender = sender
         super().__init__(message, status_code)
 
@@ -33,19 +47,31 @@ class InsufficientBalanceError(TransactionExceptions):
 class AuthorizationDenied(TransactionExceptions):
     """Exception raised when authorization is denied."""
 
-    def __init__(self, message=_("Authorization denied, try again"), status_code=status.HTTP_403_FORBIDDEN):
+    def __init__(
+        self,
+        message: object = _("Authorization denied, try again"),
+        status_code: int = status.HTTP_403_FORBIDDEN,
+    ) -> None:
         super().__init__(message, status_code)
 
 
 class TransferPermissionDenied(TransactionExceptions):
     """Exception raised when transfer permission is denied."""
 
-    def __init__(self, message=_("You do not have permission to make transfers"), status_code=status.HTTP_403_FORBIDDEN):
+    def __init__(
+        self,
+        message: object = _("You do not have permission to make transfers"),
+        status_code: int = status.HTTP_403_FORBIDDEN,
+    ) -> None:
         super().__init__(message, status_code)
 
 
 class ReceivePermissionDenied(TransactionExceptions):
     """Exception raised when receive permission is denied."""
 
-    def __init__(self, message=_("You do not have permission to receive transfers"), status_code=status.HTTP_403_FORBIDDEN):
+    def __init__(
+        self,
+        message: object = _("You do not have permission to receive transfers"),
+        status_code: int = status.HTTP_403_FORBIDDEN,
+    ) -> None:
         super().__init__(message, status_code)

@@ -14,7 +14,7 @@ class PicPayRegistrationService:
             return 'personal'
         return 'merchant'
 
-    def register(self):
+    def register(self) -> None:
         with transaction.atomic():
             user = self.account_repo.create_user(
                 email=self.form_data['email'],

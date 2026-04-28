@@ -60,14 +60,14 @@ class PicPayRegisterForm(forms.ModelForm):
             "sex",
         )
 
-    def clean_complete_name(self):
-        name = self.cleaned_data.get("complete_name")
+    def clean_complete_name(self) -> str:
+        name: str = self.cleaned_data["complete_name"]
         if not re.match("^[A-Za-zÀ-ÿ ]+$", name):
             raise forms.ValidationError("O nome deve conter apenas letras.")
         return name
 
-    def clean_email(self):
-        email = self.cleaned_data.get("email")
+    def clean_email(self) -> str:
+        email: str = self.cleaned_data["email"]
         current_email = self.instance.email
 
         if current_email != email:
@@ -78,8 +78,8 @@ class PicPayRegisterForm(forms.ModelForm):
                 )
         return email
 
-    def clean_document(self):
-        document = self.cleaned_data.get("document")
+    def clean_document(self) -> str:
+        document: str = self.cleaned_data["document"]
         digits_only = re.sub(r"\D", "", document)
 
         if len(digits_only) not in (11, 14):
@@ -95,13 +95,13 @@ class PicPayRegisterForm(forms.ModelForm):
             self.cleaned_data["document_type"] = "cnpj"
         return document
 
-    def cpf_or_cpnj(self, document):
+    def cpf_or_cpnj(self, document: str) -> str:
         digits_only = re.sub(r"\D", "", document)
         if len(digits_only) == 11:
             return "cpf"
         return "cnpj"
 
-    def cpf_validator(self, document):
+    def cpf_validator(self, document: str) -> str:
         cpf = CPF()
         doc = cpf.mask(document)
         if not cpf.validate(doc):
@@ -111,7 +111,7 @@ class PicPayRegisterForm(forms.ModelForm):
 
         return doc
 
-    def cnpj_validator(self, document):
+    def cnpj_validator(self, document: str) -> str:
         cnpj = CNPJ()
         doc = cnpj.mask(document)
         if not cnpj.validate(doc):
@@ -121,8 +121,8 @@ class PicPayRegisterForm(forms.ModelForm):
 
         return doc
 
-    def clean_password1(self):
-        password1 = self.cleaned_data.get("password1")
+    def clean_password1(self) -> str:
+        password1: str = self.cleaned_data["password1"]
 
         if len(password1) < 6:
             raise forms.ValidationError("A senha deve ter no mínimo 6 caracteres.")
