@@ -1,4 +1,5 @@
 from rest_framework import status
+from django.utils.functional import Promise
 from django.utils.translation import gettext_lazy as _
 from core.exceptions import DomainException
 
@@ -13,7 +14,7 @@ class AccountDoesNotExist(TransactionExceptions):
     def __init__(
         self,
         account: object = None,
-        message: object = _("Account does not exist!"),
+        message: str | Promise = _("Account does not exist!"),
         status_code: int = status.HTTP_404_NOT_FOUND,
     ) -> None:
         self.account = account
@@ -25,7 +26,7 @@ class SelfTransferError(TransactionExceptions):
 
     def __init__(
         self,
-        message: object = _("Transferring to your own account is not allowed"),
+        message: str | Promise = _("Transferring to your own account is not allowed"),
         status_code: int = status.HTTP_400_BAD_REQUEST,
     ) -> None:
         super().__init__(message, status_code)
@@ -37,7 +38,7 @@ class InsufficientBalanceError(TransactionExceptions):
     def __init__(
         self,
         sender: object,
-        message: object = _("Insufficient balance!"),
+        message: str | Promise = _("Insufficient balance!"),
         status_code: int = status.HTTP_400_BAD_REQUEST,
     ) -> None:
         self.sender = sender
@@ -49,7 +50,7 @@ class AuthorizationDenied(TransactionExceptions):
 
     def __init__(
         self,
-        message: object = _("Authorization denied, try again"),
+        message: str | Promise = _("Authorization denied, try again"),
         status_code: int = status.HTTP_403_FORBIDDEN,
     ) -> None:
         super().__init__(message, status_code)
@@ -60,7 +61,7 @@ class TransferPermissionDenied(TransactionExceptions):
 
     def __init__(
         self,
-        message: object = _("You do not have permission to make transfers"),
+        message: str | Promise = _("You do not have permission to make transfers"),
         status_code: int = status.HTTP_403_FORBIDDEN,
     ) -> None:
         super().__init__(message, status_code)
@@ -71,7 +72,7 @@ class ReceivePermissionDenied(TransactionExceptions):
 
     def __init__(
         self,
-        message: object = _("You do not have permission to receive transfers"),
+        message: str | Promise = _("You do not have permission to receive transfers"),
         status_code: int = status.HTTP_403_FORBIDDEN,
     ) -> None:
         super().__init__(message, status_code)

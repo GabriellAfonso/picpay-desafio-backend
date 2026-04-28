@@ -20,10 +20,18 @@ class TransactionAPIView(APIView):
     @method_decorator(csrf_protect)
     def post(self, request: Request) -> Response:
         try:
+            raw_value = request.data.get('value')
+            raw_document = request.data.get('document')
+            if not isinstance(raw_value, str) or not isinstance(raw_document, str):
+                return Response(
+                    {'error': 'Campos value e document são obrigatórios.'},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            assert request.user.pk is not None
             account_repo = AccountRepository()
-            value = self._parse_value(request.data.get('value'))
+            value = self._parse_value(raw_value)
             sender = account_repo.get_by_user_id(request.user.pk)
-            receiver = account_repo.get_by_document(request.data.get('document'))
+            receiver = account_repo.get_by_document(raw_document)
 
             result = TransactionService(
                 validator=TransactionValidator(),
@@ -43,8 +51,8 @@ class TransactionAPIView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
-    def _parse_value(self, value: object) -> float:
-        return float(str(value).replace('.', '').replace(',', '.'))
+    def _parse_value(self, value: str) -> float:
+        return float(value.replace('.', '').replace(',', '.'))
 
 
 class RecipientPreviewAPIView(APIView):

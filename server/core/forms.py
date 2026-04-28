@@ -1,9 +1,11 @@
+from collections.abc import Mapping
 from typing import Any
 from django.contrib.auth import authenticate
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from django.http import HttpRequest
 
 
 class BaseRegisterForm(UserCreationForm):
@@ -60,7 +62,7 @@ class BaseRegisterForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2')
 
     def clean_email(self) -> str:
-        email: str = self.cleaned_data.get('email', '')
+        email: str = self.cleaned_data.get('email') or ''
         current_email = self.instance.email
 
         if current_email != email:
@@ -78,10 +80,15 @@ class EmailAuthenticationForm(forms.Form):
     email = forms.EmailField(label="E-mail")
     password = forms.CharField(label="Senha", widget=forms.PasswordInput)
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        self.request = kwargs.pop("request", None)
+    def __init__(
+        self,
+        data: Mapping[str, Any] | None = None,
+        *,
+        request: HttpRequest | None = None,
+    ) -> None:
+        self.request = request
         self.user_cache: User | None = None
-        super().__init__(*args, **kwargs)
+        super().__init__(data)
 
     def clean(self) -> dict:
         email = self.cleaned_data.get("email")

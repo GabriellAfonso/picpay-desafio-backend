@@ -1,4 +1,3 @@
-from typing import Any
 from django.contrib.auth.models import User
 from features.picpay.models import PicPayAccount
 from features.picpay.exceptions import AccountDoesNotExist
@@ -27,13 +26,13 @@ class AccountRepository:
     def create_guest_user(self, username: str) -> User:
         return User.objects.create_user(username=username)
 
-    def get_by_user_id(self, user_id: Any) -> PicPayAccount:
+    def get_by_user_id(self, user_id: int) -> PicPayAccount:
         try:
             return PicPayAccount.objects.get(user_id=user_id)
         except PicPayAccount.DoesNotExist:
             raise AccountDoesNotExist()
 
-    def get_by_document(self, document: Any) -> PicPayAccount:
+    def get_by_document(self, document: str) -> PicPayAccount:
         try:
             return PicPayAccount.objects.get(document=document)
         except PicPayAccount.DoesNotExist:

@@ -1,4 +1,3 @@
-from typing import Any
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
@@ -15,9 +14,10 @@ class EmailBackend(ModelBackend):
         request: HttpRequest | None,
         username: str | None = None,
         password: str | None = None,
-        **kwargs: Any,
+        *,
+        email: str | None = None,
+        **kwargs: object,
     ) -> User | None:
-        email = kwargs.get('email')
         if not email:
             # Não trata o caso username=..., deixa para o backend padrão
             return None

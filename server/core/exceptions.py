@@ -1,8 +1,8 @@
-from typing import Any
+from django.utils.functional import Promise
 
 
 class DomainException(Exception):
-    def __init__(self, message: Any, status_code: int):
+    def __init__(self, message: str | Promise, status_code: int):
         self.message = message
         self.status_code = status_code
         super().__init__(message)

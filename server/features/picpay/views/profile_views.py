@@ -13,6 +13,7 @@ class YourProfile(View):
 
     @method_decorator(login_required(login_url='picpay:login'))
     def get(self, request: HttpRequest) -> HttpResponse:
+        assert request.user.pk is not None
         account = AccountRepository().get_by_user_id(request.user.pk)
         context = {
             'display_name': get_first_and_last_name(account.complete_name),
