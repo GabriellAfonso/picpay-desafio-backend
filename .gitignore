@@ -5,6 +5,7 @@ Makefile
 dotenv_files/
 wsl_venv/
 server/static/
+claude-sandbox
 
 # Django #
 *.log
